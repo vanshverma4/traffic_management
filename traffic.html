@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1, h2 {
+            font-family: 'Georgia', serif; /* Professional serif font for headings */
+            font-weight: bold;
+            color: #ffffff; /* White color for heading text */
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3); /* Shadow to increase contrast */
+        }
+
+        header {
+            background: linear-gradient(45deg, #003366, #004080); /* Gradient background */
+            color: white;
+            padding: 20px 0; /* Reduced padding for a more compact header */
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-bottom: 5px solid #00224d; /* Subtle border for a clean look */
+        }
+
+        header h1 {
+            font-size: 28px; /* Reduced font size for a more compact appearance */
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        nav {
+            background: #004080;
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav button {
+            background-color: #0055a5;
+            color: white;
+            padding: 12px 25px;
+            margin: 0 15px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        nav button:hover {
+            background-color: #003b66;
+            transform: scale(1.05);
+        }
+
+        main {
+            padding: 30px 20px;
+        }
+
+        .content {
+            display: none;
+            padding: 30px;
+            border-radius: 12px;
+            background-color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        #dashboard {
+            display: block;
+        }
+
+        /* Styles for Report Traffic Violation */
+        #report-violation {
+            background-color: #e0f7fa; /* Light cyan background for a calming effect */
+            border-left: 5px solid #004080; /* Accent color on left */
+        }
+
+        #report-violation h2 {
+            color: #003366;
+        }
+
+        form {
+            display: grid;
+            grid-gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #003366;
+        }
+
+        input[type="text"], select, input[type="file"] {
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, select:focus, input[type="file"]:focus {
+            border-color: #003366;
+        }
+
+        button[type="submit"] {
+            background-color: #003366;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #00224d;
+            transform: scale(1.05);
+        }
+
+        /* Styles for Admin Panel */
+        #admin-panel {
+            background-color: #e8f5e9; /* Light green background for the admin panel */
+            border-left: 5px solid #388e3c; /* Green accent for admin panel */
+        }
+
+        #admin-panel h2 {
+            color: #388e3c; /* Dark green for headings */
+        }
+
+        #map {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            height: 500px;
+            text-align: center;
+            line-height: 500px;
+            font-size: 22px;
+            color: #003366;
+            border-radius: 12px;
+        }
+
+        footer {
+            text-align: center;
+            background-color: #003366;
+            color: white;
+            padding: 15px 0;
+            margin-top: 40px;
+            font-size: 14px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Hover effect on sections */
+        .content:hover {
+            transform: translateY(-10px);
+            opacity: 0.95;
+        }
+
+        /* Specific adjustments for "Live Traffic Congestion" */
+        #dashboard h2 {
+            font-family: 'Georgia', serif;
+            font-size: 24px;
+            color: #003366;
+        }
+
+        /* Adjusted color contrast for readability */
+        #dashboard {
+            color: #003366;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚦 Traffic Management System</h1>
+    </header>
+    
+    <nav>
+        <button onclick="showSection('dashboard')">Dashboard</button>
+        <button onclick="showSection('report-violation')">Report Violation</button>
+        <button onclick="showSection('admin-panel')">Admin Panel</button>
+    </nav>
+    
+    <main>
+        <section id="dashboard" class="content">
+            <h2>Current Traffic Congestion Data</h2>
+            <div id="map">Google Maps / Mock Traffic Data</div>
+        </section>
+
+        <section id="report-violation" class="content">
+            <h2>Report Traffic Violation</h2>
+            <form id="violationForm">
+                <label for="vehicleNumber">Vehicle Number:</label>
+                <input type="text" id="vehicleNumber" placeholder="Enter vehicle number" required>
+                
+                <label for="violationType">Violation Type:</label>
+                <select id="violationType">
+                    <option>Signal Jump</option>
+                    <option>Wrong Parking</option>
+                    <option>Over Speeding</option>
+                </select>
+
+                <label for="imageUpload">Upload Image:</label>
+                <input type="file" id="imageUpload" accept="image/*">
+                
+                <button type="submit">Submit Report</button>
+            </form>
+        </section>
+
+        <section id="admin-panel" class="content">
+            <h2>Admin Panel</h2>
+            <p>Manage traffic signals, violations, and congestion data.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Traffic Management System | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Function to handle form submission for reporting a violation
+        document.getElementById('violationForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const vehicleNumber = document.getElementById('vehicleNumber').value;
+            const violationType = document.getElementById('violationType').value;
+            const imageUpload = document.getElementById('imageUpload').files[0];
+
+            // Prepare form data for submission
+            const formData = new FormData();
+            formData.append('vehicle_number', vehicleNumber);
+            formData.append('violation_type', violationType);
+
+            // Only append image if it exists
+            if (imageUpload) {
+                formData.append('image_url', imageUpload);
+            }
+
+            try {
+                // Send POST request to FastAPI backend
+                const response = await fetch('http://127.0.0.1:8000/violations/', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('Violation Reported Successfully!');
+                    console.log(data);
+                } else {
+                    alert('Failed to report violation');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Function to show different sections (Dashboard, Report Violation, Admin Panel)
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+    </script>
+</body>
+</html>
