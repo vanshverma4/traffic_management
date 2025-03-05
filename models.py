@@ -13,22 +13,3 @@ class Violation(Base):
     violation_type = Column(String, nullable=False)
     image_url = Column(Text, nullable=True)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
-
-
-
-
-'''
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
-from sqlalchemy.sql import func
-from sqlalchemy.orm import declarative_base  
-
-Base = declarative_base() 
-
-class Violation(Base):
-    __tablename__ = 'violations' 
-    id = Column(Integer, primary_key=True, index=True)
-    vehicle_number = Column(String, index=True, nullable=False)
-    violation_type = Column(String, nullable=False)
-    image_url = Column(Text, nullable=True)
-    created_at = Column(TIMESTAMP, server_default=func.now())  
-'''
