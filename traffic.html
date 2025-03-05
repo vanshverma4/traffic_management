@@ -237,40 +237,41 @@
     <script>
         // Function to handle form submission for reporting a violation
         document.getElementById('violationForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
+    event.preventDefault();
 
-            const vehicleNumber = document.getElementById('vehicleNumber').value;
-            const violationType = document.getElementById('violationType').value;
-            const imageUpload = document.getElementById('imageUpload').files[0];
+    const vehicleNumber = document.getElementById('vehicleNumber').value;
+    const violationType = document.getElementById('violationType').value;
+    const imageUpload = document.getElementById('imageUpload').files[0];
 
-            // Prepare form data for submission
-            const formData = new FormData();
-            formData.append('vehicle_number', vehicleNumber);
-            formData.append('violation_type', violationType);
+    // Prepare form data for submission
+    const formData = new FormData();
+    formData.append('vehicle_number', vehicleNumber); // Make sure the field name matches FastAPI's Form field
+    formData.append('violation_type', violationType);  // Make sure the field name matches FastAPI's Form field
 
-            // Only append image if it exists
-            if (imageUpload) {
-                formData.append('image_url', imageUpload);
-            }
+    // Only append image if it exists
+    if (imageUpload) {
+        formData.append('image', imageUpload);  // Make sure the key here matches the backend's 'image'
+    }
 
-            try {
-                // Send POST request to FastAPI backend
-                const response = await fetch('http://127.0.0.1:8000/violations/', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    alert('Violation Reported Successfully!');
-                    console.log(data);
-                } else {
-                    alert('Failed to report violation');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
+    try {
+        // Send POST request to FastAPI backend
+        const response = await fetch('http://127.0.0.1:8000/violations/', {
+            method: 'POST',
+            body: formData,
         });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('Violation Reported Successfully!');
+            console.log(data);
+        } else {
+            alert('Failed to report violation');
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+});
+
 
         // Function to show different sections (Dashboard, Report Violation, Admin Panel)
         function showSection(sectionId) {
